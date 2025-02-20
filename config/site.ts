@@ -19,7 +19,7 @@ export const siteConfig = {
         },
         {
           title: "Servicios",
-          href: "/services",
+          href: "/technical-service",
           description: "Mantenimiento, reparaciones de computadoras y fotocopiadoras",
         },
         {
