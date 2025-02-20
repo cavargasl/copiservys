@@ -26,13 +26,20 @@ export const cartSlice = createSlice({
   initialState,
   reducers: {
     addToCart: (state, action: PayloadAction<CartItem["product"]>) => {
-      const newItem: CartItem = {
-        product: action.payload,
-        quantity: 1,
-        subtotal: action.payload.price
+      const existingItem = state.items.find(item => item.product.id === action.payload.id)
+      
+      if (existingItem) {
+        existingItem.quantity += 1
+        existingItem.subtotal = existingItem.product.price * existingItem.quantity
+      } else {
+        const newItem: CartItem = {
+          product: action.payload,
+          quantity: 1,
+          subtotal: action.payload.price
+        }
+        state.items = state.items.concat(newItem)
       }
       
-      state.items = state.items.concat(newItem)
       state.total = state.items.reduce((sum, item) => sum + item.subtotal, 0)
       saveCartToLocalStorage({ ...state })
     },

@@ -30,12 +30,12 @@ export function CartSheet() {
           size="icon"
           className="relative"
         >
-          {total > 0 && (
+          {items.length > 0 && (
             <Badge
               variant="secondary"
               className="absolute -right-2 -top-2 h-6 w-6 rounded-full p-2"
             >
-              {formatPrice(total)}
+              {items.reduce((sum, item) => sum + item.quantity, 0)}
             </Badge>
           )}
           <ShoppingCart className="h-4 w-4" aria-hidden="true" />
