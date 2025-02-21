@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Product } from "@/core/products/domain/product";
 import { formatPrice } from "@/core/shared/utils";
+import { useToast } from "@/hooks/use-toast";
 import { useAppDispatch } from "@/redux/hooks";
 import { addToCart } from "@/redux/slices/cart";
 import { Image as ImageIcon, ShoppingCart } from "lucide-react";
@@ -15,7 +16,16 @@ interface ProductCardProps {
 
 export function ProductCard({ product }: ProductCardProps) {
   const dispatch = useAppDispatch();
+  const { toast } = useToast();
   const mainImage = product.images[0];
+
+  const handleAddToCart = () => {
+    dispatch(addToCart(product));
+    toast({
+      title: "Producto agregado",
+      description: `${product.title} fue agregado al carrito`,
+    });
+  };
 
   return (
     <div className="group relative rounded-lg border bg-white p-4 transition-all hover:shadow-lg">
@@ -48,7 +58,7 @@ export function ProductCard({ product }: ProductCardProps) {
           <Button
             className="flex-1"
             disabled={product.stock === 0}
-            onClick={() => dispatch(addToCart(product))}
+            onClick={handleAddToCart}
           >
             <ShoppingCart className="mr-2 h-4 w-4" />
             Agregar
