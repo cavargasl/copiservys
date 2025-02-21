@@ -9,40 +9,8 @@ export interface Product {
   images: Image[]
   price: number
   description?: string
-  category: string
-  tags: string[]
-  weight?: number
-  sku: string
   brand: string
-  model: string
-  type: 'printer' | 'spare' | 'service' | 'manufactured'
-  brochureUrl?: string
-  specifications?: {
-    printSpeed?: number
-    resolution?: string
-    compatibility?: string[]
-    dimensions?: {
-      width: number
-      height: number
-      depth: number
-    }
-  }
+  category: 'printer' | 'spare' | 'service' | 'manufactured'
   stock: number
-  warranty?: {
-    duration: number
-    type: string
-  }
-  serviceDetails?: {
-    duration: string
-    coverage: string[]
-    includedServices: string[]
-  }
-  manufacturingDetails?: {
-    assemblyDate?: Date
-    components: string[]
-    customizations: string[]
-    qualityTests: string[]
-    assemblyLocation: string
-    serialNumber: string
-  }
+  brochureUrl?: string
 }
