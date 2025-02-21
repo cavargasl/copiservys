@@ -15,12 +15,24 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { formatPrice } from "@/core/shared/utils"
-import { useAppSelector } from "@/redux/hooks"
+import { useAppDispatch, useAppSelector } from "@/redux/hooks"
+import { initializeCart } from "@/redux/slices/cart"
 import { ShoppingCart } from "lucide-react"
 import Link from "next/link"
+import { useEffect } from "react"
 
 export function CartSheet() {
   const { items, total } = useAppSelector(state => state.cart)
+
+  const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    const savedCart = localStorage.getItem("cart")
+    if (savedCart) {
+      dispatch(initializeCart(JSON.parse(savedCart)))
+    }
+  }, [dispatch])
+
   return (
     <Sheet>
       <SheetTrigger asChild>

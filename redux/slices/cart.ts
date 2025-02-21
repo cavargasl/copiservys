@@ -2,20 +2,13 @@ import { Cart, CartItem } from "@/core/cart/domain/cart"
 import { PayloadAction, createSlice, nanoid } from "@reduxjs/toolkit"
 import { RootState } from "../store"
 
-const cart = typeof window !== 'undefined' 
-  ? localStorage.getItem("cart") !== null 
-    ? JSON.parse(localStorage.getItem("cart") || "") 
-    : null
-  : null;
-
 function saveCartToLocalStorage(cart: Cart) {
   if (typeof window !== 'undefined') {
     localStorage.setItem("cart", JSON.stringify(cart))
   }
 }
 
-
-const initialState: Cart = cart ?? {
+const initialState: Cart = {
   id: nanoid(),
   items: [],
   total: 0
@@ -25,6 +18,13 @@ export const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
+    initializeCart: (state, action: PayloadAction<Cart | null>) => {
+      if (action.payload) {
+        state.id = action.payload.id
+        state.items = action.payload.items
+        state.total = action.payload.total
+      }
+    },
     addToCart: (state, action: PayloadAction<CartItem["product"]>) => {
       const existingItem = state.items.find(item => item.product.id === action.payload.id)
       
@@ -57,7 +57,6 @@ export const cartSlice = createSlice({
         saveCartToLocalStorage({ ...state })
       }
     },
-
     clearCart: (state) => {
       state.items = []
       state.total = 0
@@ -66,7 +65,7 @@ export const cartSlice = createSlice({
   }
 })
 
-export const { addToCart, removeFromCart, clearCart, updateQuantity } = cartSlice.actions
+export const { addToCart, removeFromCart, clearCart, updateQuantity, initializeCart } = cartSlice.actions
 export const selectCart = (state: RootState) => state.cart
 
 export default cartSlice.reducer;
