@@ -136,7 +136,7 @@ const ListItem = forwardRef<
           href={props.href ?? ''}
           ref={ref}
           className={cn(
-            "block select-none space-y-1 rounded-sm p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+            "group block select-none space-y-1 rounded-sm p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
             className,
             disabled && "opacity-50 cursor-not-allowed pointer-events-none"
           )}
@@ -145,7 +145,7 @@ const ListItem = forwardRef<
           <div className="text-sm font-normal leading-none">{title}</div>
           {
             children &&
-            <p className="line-clamp-2 text-sm leading-snug text-muted-foreground flex flex-col">
+            <p className="line-clamp-2 text-sm leading-snug text-muted-foreground group-hover:text-white flex flex-col">
               {children}
             </p>
           }
