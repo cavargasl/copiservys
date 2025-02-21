@@ -4,7 +4,7 @@ import { z } from "zod";
 export const env = createEnv({
   server: {
     NODE_ENV: z.enum(["development", "test", "production"]),
-
+    PRODUCTS_SHEET_URL: z.string().url(),
   },
   client: {
     NEXT_PUBLIC_NODE_ENV: z.enum(["development", "test", "production"]),
@@ -13,7 +13,7 @@ export const env = createEnv({
 
   runtimeEnv: {
     NODE_ENV: process.env.NODE_ENV,
-
+    PRODUCTS_SHEET_URL: process.env.PRODUCTS_SHEET_URL,
     NEXT_PUBLIC_NODE_ENV: process.env.NODE_ENV,
     
     NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
