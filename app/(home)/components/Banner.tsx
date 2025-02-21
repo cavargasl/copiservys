@@ -23,7 +23,7 @@ export default function Banner() {
           </h1>
           <Link
             href="/products"
-            className="inline-flex h-12 w-32 items-center justify-center rounded-md bg-orange-600 px-6 text-sm font-medium text-white transition-colors hover:bg-orange-700"
+            className="inline-flex h-12 w-32 items-center justify-center rounded-md bg-tertiary px-6 text-sm font-medium text-white transition-colors hover:bg-tertiary/90"
           >
             Ver todo
           </Link>

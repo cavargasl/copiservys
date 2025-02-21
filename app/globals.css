@@ -27,6 +27,9 @@
     --accent: 225 19% 57%; /* 7382AD */
     --accent-foreground: 30 20% 93%;
 
+    --tertiary: 15 75% 47%;
+    --tertiary-foreground: 30 20% 93%;
+
     --destructive: 0 84% 60%;
     --destructive-foreground: 30 20% 93%;
 
@@ -65,6 +68,9 @@
 
     --accent: 225 19% 47%;
     --accent-foreground: 30 20% 93%;
+
+    --tertiary: 15 75% 47%;
+    --tertiary-foreground: 30 20% 93%;
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 30 20% 93%;
