@@ -44,8 +44,8 @@ export function CartSheet() {
         >
           {items.length > 0 && (
             <Badge
-              variant="secondary"
-              className="absolute -right-2 -top-2 h-6 w-6 rounded-full p-2"
+              variant="tertiary"
+              className="absolute -right-3 -top-2 h-6 w-6 rounded-full p-2"
             >
               {items.reduce((sum, item) => sum + item.quantity, 0)}
             </Badge>

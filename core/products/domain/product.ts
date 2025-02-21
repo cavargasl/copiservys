@@ -16,6 +16,7 @@ export interface Product {
   brand: string
   model: string
   type: 'printer' | 'spare' | 'service' | 'manufactured'
+  brochureUrl?: string
   specifications?: {
     printSpeed?: number
     resolution?: string
