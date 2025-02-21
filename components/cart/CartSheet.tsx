@@ -1,11 +1,11 @@
-'use client'
+"use client";
 
-import ItemCart from "@/components/cart/ItemCart"
-import { UpdateCart } from "@/components/cart/UpdateCart"
-import { Badge } from "@/components/ui/badge"
-import { Button, buttonVariants } from "@/components/ui/button"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { Separator } from "@/components/ui/separator"
+import ItemCart from "@/components/cart/ItemCart";
+import { UpdateCart } from "@/components/cart/UpdateCart";
+import { Badge } from "@/components/ui/badge";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
 import {
   Sheet,
   SheetContent,
@@ -13,25 +13,34 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@/components/ui/sheet"
-import { formatPrice } from "@/core/shared/utils"
-import { useAppDispatch, useAppSelector } from "@/redux/hooks"
-import { initializeCart } from "@/redux/slices/cart"
-import { ShoppingCart } from "lucide-react"
-import Link from "next/link"
-import { useEffect } from "react"
+} from "@/components/ui/sheet";
+import { formatPrice } from "@/core/shared/utils";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { initializeCart } from "@/redux/slices/cart";
+import { ShoppingCart } from "lucide-react";
+import Link from "next/link";
+import { useEffect } from "react";
+import WhatsApp from "../ui/brand/WhatsApp";
 
 export function CartSheet() {
-  const { items, total } = useAppSelector(state => state.cart)
+  const { items, total } = useAppSelector((state) => state.cart);
+  const dispatch = useAppDispatch();
 
-  const dispatch = useAppDispatch()
+  const text = `¡Hola! Me gustaría hacer el siguiente pedido:
+${items.map((item) => `\n- ${item.quantity}x ${item.product.title} - ${formatPrice(item.product.price * item.quantity)}`).join('')}
+
+Total del pedido: ${formatPrice(total)}
+
+¿Podrían indicarme los costos de envío para mi zona?
+
+¡Gracias!`;
 
   useEffect(() => {
-    const savedCart = localStorage.getItem("cart")
+    const savedCart = localStorage.getItem("cart");
     if (savedCart) {
-      dispatch(initializeCart(JSON.parse(savedCart)))
+      dispatch(initializeCart(JSON.parse(savedCart)));
     }
-  }, [dispatch])
+  }, [dispatch]);
 
   return (
     <Sheet>
@@ -56,7 +65,9 @@ export function CartSheet() {
       <SheetContent className="flex w-full flex-col pr-0 sm:max-w-lg">
         <SheetHeader className="px-1">
           <SheetTitle>
-            Carrito {items.length > 0 && `(${items.reduce((sum, item) => sum + item.quantity, 0)})`}
+            Carrito{" "}
+            {items.length > 0 &&
+              `(${items.reduce((sum, item) => sum + item.quantity, 0)})`}
           </SheetTitle>
         </SheetHeader>
         <Separator />
@@ -65,7 +76,11 @@ export function CartSheet() {
             <div className="flex flex-1 flex-col gap-5 overflow-hidden">
               <ScrollArea className="h-full">
                 <div className="flex flex-col gap-5 pr-6">
-                  {items.map(item => <ItemCart key={item.product.id} item={item.product}><UpdateCart item={item.product} /></ItemCart>)}
+                  {items.map((item) => (
+                    <ItemCart key={item.product.id} item={item.product}>
+                      <UpdateCart item={item.product} />
+                    </ItemCart>
+                  ))}
                 </div>
               </ScrollArea>
             </div>
@@ -91,11 +106,18 @@ export function CartSheet() {
               <SheetFooter className="mt-1.5">
                 <SheetTrigger asChild>
                   <Link
-                    href="/checkout"
-                    aria-label="Proceed to checkout"
-                    className={buttonVariants({ className: "w-full h-10" })}
+                    href={`https://wa.me/573046263124?text=${encodeURIComponent(
+                      text
+                    )}`}
+                    target="_blank"
+                    aria-label="Completar pedido en WhatsApp"
+                    className={buttonVariants({
+                      className:
+                        "w-full h-10 bg-[#00A884] hover:bg-[#06CF9C] text-white",
+                    })}
                   >
-                    Proceder a pagar
+                    Completar pedido
+                    <WhatsApp className="h-4 w-4" aria-hidden="true" />
                   </Link>
                 </SheetTrigger>
               </SheetFooter>
@@ -114,5 +136,5 @@ export function CartSheet() {
         )}
       </SheetContent>
     </Sheet>
-  )
+  );
 }
