@@ -55,7 +55,9 @@ export function CartSheet() {
       </SheetTrigger>
       <SheetContent className="flex w-full flex-col pr-0 sm:max-w-lg">
         <SheetHeader className="px-1">
-          <SheetTitle>Carrito {total > 0 && `(${formatPrice(total)})`}</SheetTitle>
+          <SheetTitle>
+            Carrito {items.length > 0 && `(${items.reduce((sum, item) => sum + item.quantity, 0)})`}
+          </SheetTitle>
         </SheetHeader>
         <Separator />
         {total > 0 ? (
@@ -79,6 +81,7 @@ export function CartSheet() {
               </div>
               <div className="flex">
                 <span className="flex-1">IVA incluido</span>
+                <span>{formatPrice(0)}</span>
               </div>
               <Separator className="mt-2" />
               <div className="flex">
