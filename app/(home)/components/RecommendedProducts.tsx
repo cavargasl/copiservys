@@ -1,7 +1,7 @@
 import { ProductCard } from "@/components/ProductCard";
 import { Product } from "@/core/products/domain/product";
 
-const sampleProducts: Product[] = [
+export const sampleProducts: Product[] = [
   {
     id: "1",
     title: "Impresora HP LaserJet Pro M404dw",
