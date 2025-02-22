@@ -8,7 +8,7 @@ import { env } from '@/config/env.mjs';
 export const fetchProducts = createAsyncThunk(
   'products/fetchProducts',
   async () => {
-    const products = await productService(excelProductsRepository(env.PRODUCTS_SHEET_URL)).getProducts();
+    const products = await productService(excelProductsRepository(env.NEXT_PUBLIC_PRODUCTS_SHEET_URL)).getProducts();
     return products;
   }
 );
