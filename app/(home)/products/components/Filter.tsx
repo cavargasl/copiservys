@@ -30,12 +30,18 @@ export default function Filter({
 }: FilterProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const category = searchParams.get("category");
+  const brand = searchParams.get("brand");
+  const maxPrice = searchParams.get("maxPrice");
+  const search = searchParams.get("search");
+  const categoryList = category ? category.split(",") : [];
+  const brandList = brand ? brand.split(",") : [];
 
   const [selectedPriceRange, setSelectedPriceRange] = useState<number[]>([
     0,
-    Math.ceil(priceRange.max),
+    Math.ceil(maxPrice ? Number(maxPrice) : priceRange.max),
   ]);
-  const [searchText, setSearchText] = useState("");
+  const [searchText, setSearchText] = useState(search || "");
 
   const debouncedSearchText = useDebounce(searchText);
   const debouncedPriceRange = useDebounce(selectedPriceRange);
@@ -64,6 +70,7 @@ export default function Filter({
     updateQueryParams({ minPrice: debouncedPriceRange[0], maxPrice: debouncedPriceRange[1] });
   }, [debouncedPriceRange, updateQueryParams]);
 
+
   const handleCategoryChange = (category: string) => {
     const currentCategories = searchParams.get('category') ? searchParams.get('category')!.split(',') : [];
     const currentCategory = currentCategories.includes(category) ? currentCategories.filter(c => c !== category) : [...currentCategories, category];
@@ -81,7 +88,7 @@ export default function Filter({
   };
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-5 fixed">
       {/* Buscador */}
       <div>
         <div className="relative">
@@ -114,7 +121,7 @@ export default function Filter({
               onClick={() => handleCategoryChange(category.name)}
             >
               <div className="flex items-center">
-                <Checkbox />
+                <Checkbox checked={categoryList.includes(category.name)} />
                 <span className="ml-2 capitalize">{category.name}</span>
               </div>
               <span className="text-sm text-muted-foreground">
@@ -136,7 +143,7 @@ export default function Filter({
               onClick={() => handleBrandChange(brand.name)}
             >
               <div className="flex items-center">
-                <Checkbox />
+                <Checkbox checked={brandList.includes(brand.name)} />
                 <span className="ml-2 capitalize">{brand.name}</span>
               </div>
               <span className="text-sm text-muted-foreground">

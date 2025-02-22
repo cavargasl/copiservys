@@ -1,5 +1,4 @@
 import { ProductCard } from "@/components/ProductCard";
-import { fetchProducts } from "@/redux/slices/products";
 import { store } from "@/redux/store";
 
 interface RecommendedProductsProps {
@@ -9,13 +8,17 @@ interface RecommendedProductsProps {
 export async function RecommendedProducts({
   maxProducts = 4,
 }: RecommendedProductsProps) {
-  await store.dispatch(fetchProducts());
   const products = store.getState().products.items;
-  const recommendedProducts = products.filter(product => product.recommended);
-  const nonRecommendedProducts = products.filter(product => !product.recommended);
+  const recommendedProducts = products.filter((product) => product.recommended);
+  const nonRecommendedProducts = products.filter(
+    (product) => !product.recommended
+  );
   const displayProducts = [
     ...recommendedProducts,
-    ...nonRecommendedProducts.slice(0, maxProducts - recommendedProducts.length)
+    ...nonRecommendedProducts.slice(
+      0,
+      maxProducts - recommendedProducts.length
+    ),
   ].slice(0, maxProducts);
 
   return (

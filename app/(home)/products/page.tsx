@@ -100,23 +100,23 @@ function ProductsPage() {
   }));
 
   return (
-    
-      <div className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-[280px_auto_1fr] gap-4">
-          <Filter
-            categories={categories}
-            brands={brands}
-            priceRange={priceRange}
-          />
-          <Separator orientation="vertical" className="h-auto" />
+    <div className="container mx-auto px-4 py-8 relative">
+      <div className="grid grid-cols-[280px_auto_1fr] gap-4">
+        <div></div>
+        <Filter
+          categories={categories}
+          brands={brands}
+          priceRange={priceRange}
+        />
+        <Separator orientation="vertical" className="h-auto" />
 
-          <div className="grid gap-6 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
-            {filteredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
+        <div className="grid gap-6 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
+          {filteredProducts.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
         </div>
       </div>
+    </div>
   );
 }
 function Fallback() {
@@ -127,7 +127,9 @@ function Fallback() {
   );
 }
 export default function SuspenseWrapper() {
-  return <Suspense fallback={<Fallback />}>
-    <ProductsPage/>
-  </Suspense>;
+  return (
+    <Suspense fallback={<Fallback />}>
+      <ProductsPage />
+    </Suspense>
+  );
 }
