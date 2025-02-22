@@ -10,7 +10,8 @@ export interface ProductDTO {
   marca: string;
   categoria: 'impresora' | 'repuesto' | 'servicio' | 'tintas';
   stock: string;
-  brochureUrl?: string;
+  folletoUrl?: string;
+  recomendado?: boolean;
 }
 // Función para mapear de DTO a Domain Model
 export function transformProductDTOToProduct(dto: ProductDTO): Product {
@@ -26,7 +27,8 @@ export function transformProductDTOToProduct(dto: ProductDTO): Product {
     brand: dto.marca,
     category: mapCategory(dto.categoria),
     stock: parseInt(dto.stock, 10),
-    brochureUrl: dto.brochureUrl,
+    brochureUrl: dto.folletoUrl,
+    recommended: dto.recomendado || false,
   };
 }
 

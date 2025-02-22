@@ -15,4 +15,5 @@ export interface Product {
   category: Category
   stock: number
   brochureUrl?: string
+  recommended: boolean
 }
