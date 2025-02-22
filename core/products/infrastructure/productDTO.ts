@@ -1,4 +1,4 @@
-import { Product } from "../domain/product";
+import type { Category, Product } from "../domain/product";
 
 
 export interface ProductDTO {
@@ -8,7 +8,7 @@ export interface ProductDTO {
   precio: string;
   descripcion?: string;
   marca: string;
-  categoria: 'impresora' | 'repuesto' | 'servicio' | 'fabricado';
+  categoria: 'impresora' | 'repuesto' | 'servicio' | 'tintas';
   stock: string;
   brochureUrl?: string;
 }
@@ -24,10 +24,16 @@ export function transformProductDTOToProduct(dto: ProductDTO): Product {
     price: parseFloat(dto.precio),
     description: dto.descripcion,
     brand: dto.marca,
-    category: dto.categoria as 'printer' | 'spare' | 'service' | 'manufactured',
+    category: mapCategory(dto.categoria),
     stock: parseInt(dto.stock, 10),
     brochureUrl: dto.brochureUrl,
   };
+}
+
+function mapCategory(
+  category?: 'impresora' | 'repuesto' | 'servicio' | 'tintas'
+): Category {
+  return category || 'otros';
 }
 
 export const mapProductDTOsToProducts = (dtos: ProductDTO[]): Product[] => {

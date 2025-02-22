@@ -42,13 +42,17 @@ export function ProductCard({ product }: ProductCardProps) {
         )}
       </div>
       <div className="space-y-2">
-        <p className="text-sm text-muted-foreground">{product.brand}</p>
+        <p className="text-sm text-muted-foreground">
+          {product.category === 'servicio' ? 'Precio Variable' : product.brand}
+        </p>
         <h3 className="font-medium leading-tight line-clamp-2 min-h-[2.5rem]">
           {product.title}
         </h3>
         <div className="flex items-center justify-between">
           <p className="text-lg font-bold">${formatPrice(product.price)}</p>
-          {product.stock > 0 ? (
+          {product.category === 'servicio' ? (
+            <Badge className="bg-green-500 hover:bg-green-600 text-white">Disponible</Badge>
+          ) : product.stock > 0 ? (
             <Badge variant="secondary">En Stock</Badge>
           ) : (
             <Badge variant="destructive">Agotado</Badge>
@@ -57,7 +61,7 @@ export function ProductCard({ product }: ProductCardProps) {
         <div className="flex items-center gap-2 pt-2">
           <Button
             className="flex-1"
-            disabled={product.stock === 0}
+            disabled={product.category !== 'servicio' && product.stock === 0}
             onClick={handleAddToCart}
           >
             <ShoppingCart className="mr-2 h-4 w-4" />

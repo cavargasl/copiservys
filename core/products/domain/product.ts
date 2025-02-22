@@ -3,6 +3,8 @@ interface Image {
   name: string
 }
 
+export type Category = 'impresora' | 'repuesto' | 'servicio' | 'tintas' | 'otros'
+
 export interface Product {
   id: string
   title: string
@@ -10,7 +12,7 @@ export interface Product {
   price: number
   description?: string
   brand: string
-  category: 'printer' | 'spare' | 'service' | 'manufactured'
+  category: Category
   stock: number
   brochureUrl?: string
 }
