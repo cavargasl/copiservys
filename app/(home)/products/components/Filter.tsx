@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
 import { formatPrice } from "@/core/shared/utils";
 import { Search, X } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useDebounce } from "@/hooks/useDebounce";
 
@@ -40,20 +40,12 @@ export default function Filter({
   const debouncedSearchText = useDebounce(searchText);
   const debouncedPriceRange = useDebounce(selectedPriceRange);
 
-  useEffect(() => {
-    updateQueryParams({ search: debouncedSearchText });
-  }, [debouncedSearchText]);
-
-  useEffect(() => {
-    updateQueryParams({ minPrice: debouncedPriceRange[0], maxPrice: debouncedPriceRange[1] });
-  }, [debouncedPriceRange]);
-
-  const updateQueryParams = (newParams: Record<string, string | number | undefined>) => {
+  const updateQueryParams = useCallback((newParams: Record<string, string | number | undefined>) => {
     const updatedQuery = { ...Object.fromEntries(searchParams), ...newParams };
 
     // Filtrar valores undefined
     const filteredQuery = Object.fromEntries(
-      Object.entries(updatedQuery).filter(([_, v]) => v !== undefined)
+      Object.entries(updatedQuery).filter(([, v]) => v !== undefined)
     );
 
     // Convertir valores a string
@@ -62,7 +54,15 @@ export default function Filter({
     );
 
     router.push(`/products?${new URLSearchParams(stringQuery).toString()}`);
-  };
+  }, [searchParams, router]);
+
+  useEffect(() => {
+    updateQueryParams({ search: debouncedSearchText });
+  }, [debouncedSearchText, updateQueryParams]);
+
+  useEffect(() => {
+    updateQueryParams({ minPrice: debouncedPriceRange[0], maxPrice: debouncedPriceRange[1] });
+  }, [debouncedPriceRange, updateQueryParams]);
 
   const handleCategoryChange = (category: string) => {
     const currentCategories = searchParams.get('category') ? searchParams.get('category')!.split(',') : [];
