@@ -7,11 +7,18 @@ import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { fetchProducts, selectProducts } from "@/redux/slices/products";
 import { Loader2 } from "lucide-react";
+import { useSearchParams } from 'next/navigation';
 
 export default function ProductsPage() {
   const dispatch = useAppDispatch();
   const { items: products, status, error } = useAppSelector(selectProducts);
-
+  const searchParams = useSearchParams();
+  const category = searchParams.get('category');
+  const brand = searchParams.get('brand');
+  const minPrice = searchParams.get('minPrice');
+  const maxPrice = searchParams.get('maxPrice');
+  const search = searchParams.get('search');
+  
   useEffect(() => {
     if (products.length === 0) {
       dispatch(fetchProducts());
@@ -33,6 +40,22 @@ export default function ProductsPage() {
       </div>
     );
   }
+
+  const categoryList = category ? category.split(',') : [];
+  const brandList = brand ? brand.split(',') : [];
+
+  const filteredProducts = products.filter(product => {
+    const matchesCategory = categoryList.length > 0 ? categoryList.includes(product.category) : true;
+    const matchesBrand = brandList.length > 0 ? brandList.includes(product.brand) : true;
+    const matchesMinPrice = minPrice ? product.price >= Number(minPrice) : true;
+    const matchesMaxPrice = maxPrice ? product.price <= Number(maxPrice) : true;
+    const matchesSearchTerm = search 
+      ? product.title.toLowerCase().includes(search.toLowerCase()) || 
+        product.description?.toLowerCase().includes(search.toLowerCase()) 
+      : true;
+
+    return matchesCategory && matchesBrand && matchesMinPrice && matchesMaxPrice && matchesSearchTerm;
+  }).map(product => ({ ...product }));
 
   const categoriesWithCount = products.reduce((acc, product) => {
     acc[product.category] = (acc[product.category] || 0) + 1;
@@ -72,8 +95,8 @@ export default function ProductsPage() {
         />
         <Separator orientation="vertical" className="h-auto" />
 
-        <div className="grid gap-6 grid-cols-[repeat(auto-fit,minmax(280px,1fr))]">
-          {products.map((product) => (
+        <div className="grid gap-6 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
+          {filteredProducts.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>

@@ -4,7 +4,9 @@ import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
 import { formatPrice } from "@/core/shared/utils";
 import { Search, X } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useDebounce } from "@/hooks/useDebounce";
 
 interface FilterItem {
   name: string;
@@ -26,11 +28,57 @@ export default function Filter({
   brands,
   priceRange,
 }: FilterProps) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
   const [selectedPriceRange, setSelectedPriceRange] = useState<number[]>([
     0,
     Math.ceil(priceRange.max),
   ]);
   const [searchText, setSearchText] = useState("");
+
+  const debouncedSearchText = useDebounce(searchText);
+  const debouncedPriceRange = useDebounce(selectedPriceRange);
+
+  useEffect(() => {
+    updateQueryParams({ search: debouncedSearchText });
+  }, [debouncedSearchText]);
+
+  useEffect(() => {
+    updateQueryParams({ minPrice: debouncedPriceRange[0], maxPrice: debouncedPriceRange[1] });
+  }, [debouncedPriceRange]);
+
+  const updateQueryParams = (newParams: Record<string, string | number | undefined>) => {
+    const updatedQuery = { ...Object.fromEntries(searchParams), ...newParams };
+
+    // Filtrar valores undefined
+    const filteredQuery = Object.fromEntries(
+      Object.entries(updatedQuery).filter(([_, v]) => v !== undefined)
+    );
+
+    // Convertir valores a string
+    const stringQuery = Object.fromEntries(
+      Object.entries(filteredQuery).map(([k, v]) => [k, String(v)])
+    );
+
+    router.push(`/products?${new URLSearchParams(stringQuery).toString()}`);
+  };
+
+  const handleCategoryChange = (category: string) => {
+    const currentCategories = searchParams.get('category') ? searchParams.get('category')!.split(',') : [];
+    const currentCategory = currentCategories.includes(category) ? currentCategories.filter(c => c !== category) : [...currentCategories, category];
+    updateQueryParams({ category: currentCategory.join(',') });
+  };
+
+  const handleBrandChange = (brand: string) => {
+    const currentBrands = searchParams.get('brand') ? searchParams.get('brand')!.split(',') : [];
+    const currentBrand = currentBrands.includes(brand) ? currentBrands.filter(b => b !== brand) : [...currentBrands, brand];
+    updateQueryParams({ brand: currentBrand.join(',') });
+  };
+
+  const handlePriceChange = (newPriceRange: number[]) => {
+    setSelectedPriceRange(newPriceRange);
+  };
 
   return (
     <div className="space-y-5">
@@ -63,6 +111,7 @@ export default function Filter({
             <label
               key={category.name}
               className="flex items-center justify-between"
+              onClick={() => handleCategoryChange(category.name)}
             >
               <div className="flex items-center">
                 <Checkbox />
@@ -84,6 +133,7 @@ export default function Filter({
             <label
               key={brand.name}
               className="flex items-center justify-between"
+              onClick={() => handleBrandChange(brand.name)}
             >
               <div className="flex items-center">
                 <Checkbox />
@@ -105,7 +155,7 @@ export default function Filter({
           max={Math.ceil(priceRange.max)}
           min={0}
           value={selectedPriceRange}
-          onValueChange={setSelectedPriceRange}
+          onValueChange={handlePriceChange}
           isRange
         />
         <div className="flex justify-between text-sm mt-2">
