@@ -4,7 +4,7 @@ import type { Category, Product } from "../domain/product";
 export interface ProductDTO {
   id: string;
   titulo: string;
-  imagenes: string;
+  imagenes?: string;
   precio: string;
   descripcion?: string;
   marca: string;
@@ -18,10 +18,12 @@ export function transformProductDTOToProduct(dto: ProductDTO): Product {
   return {
     id: dto.id,
     title: dto.titulo,
-    images: dto.imagenes.split(',').map(url => ({
-      url: url.trim(),
-      name: url.trim().split('/').pop()?.split('?')[0] || 'sin-nombre'
-    })),
+    images: dto.imagenes && dto.imagenes.length > 0 
+        ? dto.imagenes.split(',').map(url => ({
+            url: url.trim(),
+            name: url.trim().split('/').pop()?.split('?')[0] || 'sin-nombre'
+        })) 
+        : [],
     price: parseFloat(dto.precio),
     description: dto.descripcion,
     brand: dto.marca,

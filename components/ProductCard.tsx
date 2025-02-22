@@ -17,7 +17,7 @@ interface ProductCardProps {
 export function ProductCard({ product }: ProductCardProps) {
   const dispatch = useAppDispatch();
   const { toast } = useToast();
-  const mainImage = product.images[0];
+  const mainImage = product.images.length > 0 ? product.images[0] : null;
 
   const handleAddToCart = () => {
     dispatch(addToCart(product));
@@ -30,7 +30,7 @@ export function ProductCard({ product }: ProductCardProps) {
   return (
     <div className="group relative rounded-lg border bg-white p-4 transition-all hover:shadow-lg">
       <div className="relative mb-2 aspect-square overflow-hidden rounded-md">
-        {mainImage.url ? (
+        {mainImage ? (
           <Image
             src={mainImage.url}
             alt={mainImage.name}
