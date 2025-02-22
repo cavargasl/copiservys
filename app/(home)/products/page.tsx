@@ -9,7 +9,7 @@ import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect } from "react";
 import Filter from "./components/Filter";
 
-export default function ProductsPage() {
+function ProductsPage() {
   const dispatch = useAppDispatch();
   const { items: products, status, error } = useAppSelector(selectProducts);
   const searchParams = useSearchParams();
@@ -26,11 +26,7 @@ export default function ProductsPage() {
   }, [dispatch, products.length]);
 
   if (status === "loading") {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <Loader2 className="h-8 w-8 animate-spin" />
-      </div>
-    );
+    return <Fallback />;
   }
 
   if (status === "failed") {
@@ -104,13 +100,7 @@ export default function ProductsPage() {
   }));
 
   return (
-    <Suspense
-      fallback={
-        <div className="flex items-center justify-center min-h-screen">
-          <Loader2 className="h-8 w-8 animate-spin" />
-        </div>
-      }
-    >
+    
       <div className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-[280px_auto_1fr] gap-4">
           <Filter
@@ -127,6 +117,17 @@ export default function ProductsPage() {
           </div>
         </div>
       </div>
-    </Suspense>
   );
+}
+function Fallback() {
+  return (
+    <div className="flex items-center justify-center min-h-screen">
+      <Loader2 className="h-8 w-8 animate-spin" />
+    </div>
+  );
+}
+export default function SuspenseWrapper() {
+  return <Suspense fallback={<Fallback />}>
+    <ProductsPage/>
+  </Suspense>;
 }
