@@ -11,7 +11,6 @@ export const excelProductsRepository = (csvUrl: string): ProductRepository => ({
         responseType: 'blob'
       });
       const csvText = await response.data;
-      console.log(csvText)
       const { data: rawData } = Papa.parse(csvText, {
         header: true,
       });

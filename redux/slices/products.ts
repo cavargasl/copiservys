@@ -1,13 +1,14 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { productService } from "@/core/products/application/productService";
-import { testProductsRepository } from "@/core/products/infrastructure/testProducts.repository";
 import { RootState } from "../store";
 import { Product } from '@/core/products/domain/product';
+import { excelProductsRepository } from '@/core/products/infrastructure/excelProducts.repository';
+import { env } from '@/config/env.mjs';
 
 export const fetchProducts = createAsyncThunk(
   'products/fetchProducts',
   async () => {
-    const products = await productService(testProductsRepository()).getProducts();
+    const products = await productService(excelProductsRepository(env.PRODUCTS_SHEET_URL)).getProducts();
     return products;
   }
 );

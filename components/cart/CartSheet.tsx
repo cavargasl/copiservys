@@ -21,6 +21,7 @@ import { ShoppingCart } from "lucide-react";
 import Link from "next/link";
 import { useEffect } from "react";
 import WhatsApp from "../ui/brand/WhatsApp";
+import { env } from "@/config/env.mjs";
 
 export function CartSheet() {
   const { items, total } = useAppSelector((state) => state.cart);
@@ -106,7 +107,7 @@ Total del pedido: ${formatPrice(total)}
               <SheetFooter className="mt-1.5">
                 <SheetTrigger asChild>
                   <Link
-                    href={`https://wa.me/573046263124?text=${encodeURIComponent(
+                    href={`https://wa.me/${env.NEXT_PUBLIC_WHATSAPP_NUMBER}?text=${encodeURIComponent(
                       text
                     )}`}
                     target="_blank"
