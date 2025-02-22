@@ -1,15 +1,39 @@
+"use client";
+
 import { ProductCard } from "@/components/ProductCard";
 import { Separator } from "@/components/ui/separator";
 import Filter from "./components/Filter";
-import { productService } from "@/core/products/application/productService";
-import { testProductsRepository } from "@/core/products/infrastructure/testProducts.repository";
+import { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { fetchProducts, selectProducts } from "@/redux/slices/products";
+import { Loader2 } from "lucide-react";
 
-export const revalidate = 86400;
+export default function ProductsPage() {
+  const dispatch = useAppDispatch();
+  const { items: products, status, error } = useAppSelector(selectProducts);
 
-export default async function ProductsPage() {
-  //const products = await productService(excelProductsRepository(env.PRODUCTS_SHEET_URL)).getProducts()
-  const products = await productService(testProductsRepository()).getProducts()
-  
+  useEffect(() => {
+    if (products.length === 0) {
+      dispatch(fetchProducts());
+    }
+  }, [dispatch, products.length]);
+
+  if (status === 'loading') {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <Loader2 className="h-8 w-8 animate-spin" />
+      </div>
+    );
+  }
+
+  if (status === 'failed') {
+    return (
+      <div className="flex items-center justify-center min-h-screen text-red-500">
+        Error al cargar productos: {error}
+      </div>
+    );
+  }
+
   const categoriesWithCount = products.reduce((acc, product) => {
     acc[product.category] = (acc[product.category] || 0) + 1;
     return acc;
