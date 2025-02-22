@@ -29,7 +29,7 @@ export function ProductCard({ product }: ProductCardProps) {
 
   return (
     <div className="group relative rounded-lg border bg-white p-4 transition-all hover:shadow-lg">
-      <div className="relative mb-4 aspect-square overflow-hidden rounded-md">
+      <div className="relative mb-2 aspect-square overflow-hidden rounded-md">
         {mainImage.url ? (
           <Image
             src={mainImage.url}
@@ -41,13 +41,16 @@ export function ProductCard({ product }: ProductCardProps) {
           <ImageIcon className="h-full w-full object-cover transition-transform group-hover:scale-105 opacity-15" />
         )}
       </div>
-      <div className="space-y-2">
-        <p className="text-sm text-muted-foreground">
+      <div className="space-y-1">
+        <p className="text-sm text-muted-foreground m-0 p-0 leading-none">
           {product.category === 'servicio' ? 'Precio Variable' : product.brand}
         </p>
-        <h3 className="font-medium leading-tight line-clamp-2 min-h-[2.5rem]">
+        <h3 className="font-medium leading-tight line-clamp-2">
           {product.title}
         </h3>
+        <p className="text-sm text-muted-foreground line-clamp-3">
+          {product.description}
+        </p>
         <div className="flex items-center justify-between">
           <p className="text-lg font-bold">${formatPrice(product.price)}</p>
           {product.category === 'servicio' ? (
@@ -69,7 +72,7 @@ export function ProductCard({ product }: ProductCardProps) {
           </Button>
           {product.brochureUrl && (
             <Button variant="outline" asChild>
-              <Link href={product.brochureUrl}>Ficha Técnica</Link>
+              <Link href={product.brochureUrl} target="_blank" rel="noopener noreferrer">Ficha Técnica</Link>
             </Button>
           )}
         </div>
