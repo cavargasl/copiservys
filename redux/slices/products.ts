@@ -1,39 +1,43 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { productService } from "@/core/products/application/productService";
+import { env } from "@/config/env.mjs";
+import { Product } from "@/core/products/domain/product";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../store";
-import { Product } from '@/core/products/domain/product';
-import { excelProductsRepository } from '@/core/products/infrastructure/excelProducts.repository';
-import { env } from '@/config/env.mjs';
 
 export const fetchProducts = createAsyncThunk(
-  'products/fetchProducts',
+  "products/fetchProducts",
   async () => {
-    const products = await productService(excelProductsRepository(env.NEXT_PUBLIC_PRODUCTS_SHEET_URL)).getProducts();
-    return products;
+    const response = await fetch(`${env.NEXT_PUBLIC_APP_URL}/api/products`);
+
+    if (!response.ok) {
+      throw new Error("Error al obtener los productos");
+    }
+
+    const data = await response.json();
+    return data;
   }
 );
 
 const initialState = {
   items: [] as Product[],
-  status: 'idle',
-  error: undefined as string | undefined
-}
+  status: "idle",
+  error: undefined as string | undefined,
+};
 
 const productsSlice = createSlice({
-  name: 'products',
+  name: "products",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchProducts.pending, (state) => {
-        state.status = 'loading';
+        state.status = "loading";
       })
       .addCase(fetchProducts.fulfilled, (state, action) => {
-        state.status = 'succeeded';
+        state.status = "succeeded";
         state.items = action.payload;
       })
       .addCase(fetchProducts.rejected, (state, action) => {
-        state.status = 'failed';
+        state.status = "failed";
         state.error = action.error.message;
       });
   },
