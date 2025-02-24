@@ -11,8 +11,8 @@ export interface ProductDTO {
   categoria: Category;
   stock: string;
   folletoUrl?: string;
-  recomendado?: boolean;
-  remanufacturada?: boolean;
+  recomendado?: string;
+  remanufacturada?: string;
 }
 // Función para mapear de DTO a Domain Model
 export function transformProductDTOToProduct(dto: ProductDTO): Product {
@@ -31,8 +31,8 @@ export function transformProductDTOToProduct(dto: ProductDTO): Product {
     category: dto.categoria,
     stock: parseInt(dto.stock, 10),
     brochureUrl: dto.folletoUrl,
-    recommended: dto.recomendado || false,
-    isRemanufactured: dto.remanufacturada || false,
+    recommended: dto.recomendado?.toLocaleLowerCase() === 'true',
+    isRemanufactured: dto.remanufacturada?.toLocaleLowerCase() === 'true',
   };
 }
 

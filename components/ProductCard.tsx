@@ -31,14 +31,15 @@ export function ProductCard({ product }: ProductCardProps) {
     <div className="group relative rounded-lg border bg-white p-4 transition-all hover:shadow-lg">
       <div className="relative mb-2 aspect-square overflow-hidden rounded-md">
         {product.isRemanufactured && (
-          <Badge variant={"tertiary"}>Remanufacturada</Badge>
+          <Badge variant={"tertiary"} className="absolute top-0 left-0 z-10 hover:bg-tertiary">
+            Remanufacturada
+          </Badge>
         )}
         {mainImage ? (
           <Image
             src={mainImage.url}
             alt={mainImage.name}
             fill
-            className="object-cover transition-transform group-hover:scale-105"
           />
         ) : (
           <ImageIcon className="h-full w-full object-cover transition-transform group-hover:scale-105 opacity-15" />
