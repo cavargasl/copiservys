@@ -1,12 +1,12 @@
 "use client";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
 import { formatPrice } from "@/core/shared/utils";
-import { Search, X } from "lucide-react";
-import { useState, useEffect, useCallback } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useDebounce } from "@/hooks/useDebounce";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import SearchInput from "./SearchInput";
+import { useUpdateQueryParams } from "../utils/queryUtils";
 
 interface FilterItem {
   name: string;
@@ -28,61 +28,51 @@ export default function Filter({
   brands,
   priceRange,
 }: FilterProps) {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const category = searchParams.get("category");
   const brand = searchParams.get("brand");
   const maxPrice = searchParams.get("maxPrice");
-  const search = searchParams.get("search");
   const categoryList = category ? category.split(",") : [];
   const brandList = brand ? brand.split(",") : [];
 
+  const updateQueryParams = useUpdateQueryParams(searchParams);
+
   const [selectedPriceRange, setSelectedPriceRange] = useState<number[]>([
     0,
-    Math.ceil(maxPrice && maxPrice !== '-Infinity' ? Number(maxPrice) : priceRange.max),
+    Math.ceil(
+      maxPrice && maxPrice !== "-Infinity" ? Number(maxPrice) : priceRange.max
+    ),
   ]);
-  const [searchText, setSearchText] = useState(search || "");
-
-  const debouncedSearchText = useDebounce(searchText);
+  
   const debouncedPriceRange = useDebounce(selectedPriceRange);
-
-  const updateQueryParams = useCallback((newParams: Record<string, string | number | undefined>) => {
-    const updatedQuery = { ...Object.fromEntries(searchParams), ...newParams };
-
-    // Filtrar valores undefined y valores vacíos
-    const filteredQuery = Object.fromEntries(
-      Object.entries(updatedQuery).filter(([, v]) => v !== undefined && v !== "")
-    );
-
-    // Convertir valores a string
-    const stringQuery = Object.fromEntries(
-      Object.entries(filteredQuery).map(([k, v]) => [k, String(v)])
-    );
-
-    router.push(`/products?${new URLSearchParams(stringQuery).toString()}`);
-  }, [searchParams, router]);
-
-  useEffect(() => {
-    updateQueryParams({ search: debouncedSearchText });
-  }, [debouncedSearchText, updateQueryParams]);
 
   useEffect(() => {
     if (priceRange.max !== -Infinity) {
-        updateQueryParams({ minPrice: debouncedPriceRange[0], maxPrice: debouncedPriceRange[1] });
+      updateQueryParams({
+        minPrice: debouncedPriceRange[0],
+        maxPrice: debouncedPriceRange[1],
+      });
     }
   }, [debouncedPriceRange, priceRange.max, updateQueryParams]);
 
-
   const handleCategoryChange = (category: string) => {
-    const currentCategories = searchParams.get('category') ? searchParams.get('category')!.split(',') : [];
-    const currentCategory = currentCategories.includes(category) ? currentCategories.filter(c => c !== category) : [...currentCategories, category];
-    updateQueryParams({ category: currentCategory.join(',') });
+    const currentCategories = searchParams.get("category")
+      ? searchParams.get("category")!.split(",")
+      : [];
+    const currentCategory = currentCategories.includes(category)
+      ? currentCategories.filter((c) => c !== category)
+      : [...currentCategories, category];
+    updateQueryParams({ category: currentCategory.join(",") });
   };
 
   const handleBrandChange = (brand: string) => {
-    const currentBrands = searchParams.get('brand') ? searchParams.get('brand')!.split(',') : [];
-    const currentBrand = currentBrands.includes(brand) ? currentBrands.filter(b => b !== brand) : [...currentBrands, brand];
-    updateQueryParams({ brand: currentBrand.join(',') });
+    const currentBrands = searchParams.get("brand")
+      ? searchParams.get("brand")!.split(",")
+      : [];
+    const currentBrand = currentBrands.includes(brand)
+      ? currentBrands.filter((b) => b !== brand)
+      : [...currentBrands, brand];
+    updateQueryParams({ brand: currentBrand.join(",") });
   };
 
   const handlePriceChange = (newPriceRange: number[]) => {
@@ -90,27 +80,9 @@ export default function Filter({
   };
 
   return (
-    <div className="space-y-5 fixed">
+    <div className="space-y-5 hidden lg:block fixed">
       {/* Buscador */}
-      <div>
-        <div className="relative">
-          <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-          <Input
-            value={searchText}
-            onChange={(e) => setSearchText(e.target.value)}
-            placeholder="Buscar productos..."
-            className="pl-8 bg-secondary/50 hover:bg-secondary/70 focus:bg-secondary/70 transition-colors"
-          />
-          {searchText && (
-            <button
-              onClick={() => setSearchText("")}
-              className="absolute right-2 top-2.5 text-muted-foreground hover:text-foreground"
-            >
-              <X className="h-4 w-4" />
-            </button>
-          )}
-        </div>
-      </div>
+      <SearchInput />
 
       {/* Categorías */}
       <div>
@@ -124,7 +96,9 @@ export default function Filter({
             >
               <div className="flex items-center">
                 <Checkbox checked={categoryList.includes(category.name)} />
-                <span className="ml-2 capitalize line-clamp-1">{category.name}</span>
+                <span className="ml-2 capitalize line-clamp-1">
+                  {category.name}
+                </span>
               </div>
               <span className="text-sm text-muted-foreground">
                 ({category.count})
@@ -146,7 +120,9 @@ export default function Filter({
             >
               <div className="flex items-center">
                 <Checkbox checked={brandList.includes(brand.name)} />
-                <span className="ml-2 capitalize line-clamp-1">{brand.name}</span>
+                <span className="ml-2 capitalize line-clamp-1">
+                  {brand.name}
+                </span>
               </div>
               <span className="text-sm text-muted-foreground">
                 ({brand.count})

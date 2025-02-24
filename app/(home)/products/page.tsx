@@ -1,13 +1,15 @@
 "use client";
 
 import { ProductCard } from "@/components/ProductCard";
+import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { fetchProducts, selectProducts } from "@/redux/slices/products";
-import { Loader2 } from "lucide-react";
+import { FilterIcon, Loader2 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect } from "react";
 import Filter from "./components/Filter";
+import SearchInput from "./components/SearchInput";
 
 function ProductsPage() {
   const dispatch = useAppDispatch();
@@ -101,14 +103,20 @@ function ProductsPage() {
 
   return (
     <div className="container mx-auto py-8 relative">
-      <div className="grid grid-cols-[220px_auto_1fr] gap-4">
-        <div></div>
+      <section className="grid grid-cols-[1fr_auto] gap-4 justify-between lg:hidden mb-4">
+        <SearchInput />
+        <Button variant="outline" size={"icon"}>
+          <FilterIcon className="w-6 h-6" />
+        </Button>
+      </section>
+      <div className="grid grid-cols-1 lg:grid-cols-[220px_auto_1fr] gap-4">
+        <div className="hidden lg:block"></div>
         <Filter
           categories={categories}
           brands={brands}
           priceRange={priceRange}
         />
-        <Separator orientation="vertical" className="h-auto" />
+        <Separator orientation="vertical" className="h-auto hidden lg:block" />
 
         <div className="grid gap-6 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
           {filteredProducts.map((product) => (
