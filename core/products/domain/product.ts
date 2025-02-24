@@ -3,7 +3,7 @@ interface Image {
   name: string
 }
 
-export type Category = 'impresora' | 'repuesto' | 'servicio' | 'tintas' | 'otros'
+export type Category = 'fotocopiadoras' | 'servicios' | 'suministros' | 'otros'
 
 export interface Product {
   id: string
