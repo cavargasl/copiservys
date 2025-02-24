@@ -7,7 +7,7 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useUpdateQueryParams } from "../utils/queryUtils";
 
-export default function SearchInput() {
+export default function SearchFilter() {
   const searchParams = useSearchParams();
   const search = searchParams.get("search");
   const [searchText, setSearchText] = useState(search || "");

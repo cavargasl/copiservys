@@ -1,26 +1,25 @@
 import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import {
-  SheetTrigger,
+  Sheet,
   SheetContent,
   SheetTitle,
-  Sheet,
+  SheetTrigger,
 } from "@/components/ui/sheet";
 import { FilterIcon } from "lucide-react";
-import React, { useState } from "react";
-import SearchInput from "./SearchInput";
-import Filter, { FilterProps } from "./Filter";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { useState } from "react";
+import SearchFilter from "./SearchFilter";
 
-export default function MobileFilter({
-  categories,
-  brands,
-  priceRange,
-}: FilterProps) {
+interface MobileFilterProps {
+  children: React.ReactNode;
+}
+
+export default function MobileFilter({ children }: MobileFilterProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <section className="grid grid-cols-[1fr_auto] gap-4 justify-between lg:hidden mb-4">
-      <SearchInput />
+    <section className="grid grid-cols-[1fr_auto] gap-4 justify-between mb-4">
+      <SearchFilter />
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <SheetTrigger asChild>
           <Button variant="outline" size={"icon"}>
@@ -30,12 +29,7 @@ export default function MobileFilter({
         <SheetContent side="left">
           <SheetTitle>Filtros</SheetTitle>
           <ScrollArea className="my-4 h-[calc(100vh-8rem)] pb-10 pl-6">
-            <Filter
-              categories={categories}
-              brands={brands}
-              priceRange={priceRange}
-              hideSearch={true}
-            />
+            <div className="space-y-5">{children}</div>
           </ScrollArea>
         </SheetContent>
       </Sheet>

@@ -7,8 +7,13 @@ import { fetchProducts, selectProducts } from "@/redux/slices/products";
 import { Loader2 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect } from "react";
-import Filter from "./components/Filter";
+import { useMediaQuery } from "react-responsive";
+import BrandFilter from "./components/BrandFilter";
+import CategoryFilter from "./components/CategoryFilter";
 import MobileFilter from "./components/MobileFilter";
+import PriceRangeSlider from "./components/PriceRangeSlider";
+import SearchFilter from "./components/SearchFilter";
+import { filterProducts } from "./utils/filterProducts";
 
 function ProductsPage() {
   const dispatch = useAppDispatch();
@@ -19,6 +24,8 @@ function ProductsPage() {
   const minPrice = searchParams.get("minPrice");
   const maxPrice = searchParams.get("maxPrice");
   const search = searchParams.get("search");
+
+  const isMobile = useMediaQuery({ query: "(max-width: 1024px)" });
 
   useEffect(() => {
     if (products.length === 0) {
@@ -41,34 +48,14 @@ function ProductsPage() {
   const categoryList = category ? category.split(",") : [];
   const brandList = brand ? brand.split(",") : [];
 
-  const filteredProducts = products
-    .filter((product) => {
-      const matchesCategory =
-        categoryList.length > 0
-          ? categoryList.includes(product.category)
-          : true;
-      const matchesBrand =
-        brandList.length > 0 ? brandList.includes(product.brand) : true;
-      const matchesMinPrice = minPrice
-        ? product.price >= Number(minPrice)
-        : true;
-      const matchesMaxPrice = maxPrice
-        ? product.price <= Number(maxPrice)
-        : true;
-      const matchesSearchTerm = search
-        ? product.title.toLowerCase().includes(search.toLowerCase()) ||
-          product.description?.toLowerCase().includes(search.toLowerCase())
-        : true;
-
-      return (
-        matchesCategory &&
-        matchesBrand &&
-        matchesMinPrice &&
-        matchesMaxPrice &&
-        matchesSearchTerm
-      );
-    })
-    .map((product) => ({ ...product }));
+  const filteredProducts = filterProducts({
+    products,
+    categoryList,
+    brandList,
+    minPrice,
+    maxPrice,
+    search,
+  });
 
   const categoriesWithCount = products.reduce((acc, product) => {
     acc[product.category] = (acc[product.category] || 0) + 1;
@@ -102,28 +89,41 @@ function ProductsPage() {
 
   return (
     <div className="container mx-auto py-8 relative">
-      <MobileFilter
-        categories={categories}
-        brands={brands}
-        priceRange={priceRange}
-      />
+      {isMobile && (
+        <MobileFilter>
+          <CategoryFilter categories={categories} />
+          <BrandFilter brands={brands} />
+          <PriceRangeSlider priceRange={priceRange} />
+        </MobileFilter>
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-[220px_auto_1fr] gap-4">
-        <div className="hidden lg:block"></div>
-        <div className="space-y-5 hidden lg:block fixed">
-          <Filter
-            categories={categories}
-            brands={brands}
-            priceRange={priceRange}
-          />
-        </div>
-        <Separator orientation="vertical" className="h-auto hidden lg:block" />
+        {!isMobile && (
+          <>
+            <div></div>
+            <div className="space-y-5 fixed">
+              <div className="space-y-5">
+                <SearchFilter />
+                <CategoryFilter categories={categories} />
+                <BrandFilter brands={brands} />
+                <PriceRangeSlider priceRange={priceRange} />
+              </div>
+            </div>
+            <Separator orientation="vertical" className="h-auto" />
+          </>
+        )}
 
-        <div className="grid gap-6 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
-          {filteredProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
+        {filteredProducts.length === 0 && products.length > 0 ? (
+          <div className="text-center w-full">
+            No se encontraron productos que coincidan con los filtros aplicados.
+          </div>
+        ) : (
+          <div className="grid gap-6 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
+            {filteredProducts.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
