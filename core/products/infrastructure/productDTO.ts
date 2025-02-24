@@ -27,7 +27,7 @@ export function transformProductDTOToProduct(dto: ProductDTO): Product {
         : [],
     price: parseFloat(dto.precio),
     description: dto.descripcion,
-    brand: dto.marca,
+    brand: dto.marca && dto.marca.trim() !== '' ? dto.marca : 'otras',
     category: dto.categoria,
     stock: parseInt(dto.stock, 10),
     brochureUrl: dto.folletoUrl,
