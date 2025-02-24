@@ -25,6 +25,17 @@ export default async function Categories() {
               </span>
             </Link>
           ))}
+          {categories.length <= 3 && (
+            <Link
+              href={`/contact`}
+              className="flex min-h-[200px] items-center justify-center rounded-lg bg-white p-6 transition-transform hover:scale-105"
+            >
+              <span className="flex items-center text-xl font-medium capitalize">
+                Contáctanos
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </span>
+            </Link>
+          )}
         </div>
       </div>
     </section>
