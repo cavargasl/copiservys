@@ -42,12 +42,12 @@ export default function ItemCart({ item, children }: ItemCartProps) {
             {item.title}
           </span>
           <span className="line-clamp-1">{`${
-            item.category === "servicio" ? "Precio aproximado" : "Precio unidad"
+            item.category === "servicios" ? "Precio aproximado" : "Precio unidad"
           }`}</span>
           <span className="line-clamp-1 text-muted-foreground">
             {formatPrice(item.price)}
           </span>
-          {item.category !== "servicio" && (
+          {item.category !== "servicios" && (
             <>
               <span className="line-clamp-1">Cantidad:</span>
               <div className="flex items-center gap-2">
