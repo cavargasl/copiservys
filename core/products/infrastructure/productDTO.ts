@@ -8,10 +8,11 @@ export interface ProductDTO {
   precio: string;
   descripcion?: string;
   marca: string;
-  categoria: 'impresora' | 'repuesto' | 'servicio' | 'tintas';
+  categoria: Category;
   stock: string;
   folletoUrl?: string;
   recomendado?: boolean;
+  remanufacturada?: boolean;
 }
 // Función para mapear de DTO a Domain Model
 export function transformProductDTOToProduct(dto: ProductDTO): Product {
@@ -27,18 +28,14 @@ export function transformProductDTOToProduct(dto: ProductDTO): Product {
     price: parseFloat(dto.precio),
     description: dto.descripcion,
     brand: dto.marca,
-    category: mapCategory(dto.categoria),
+    category: dto.categoria,
     stock: parseInt(dto.stock, 10),
     brochureUrl: dto.folletoUrl,
     recommended: dto.recomendado || false,
+    isRemanufactured: dto.remanufacturada || false,
   };
 }
 
-function mapCategory(
-  category?: 'impresora' | 'repuesto' | 'servicio' | 'tintas'
-): Category {
-  return category || 'otros';
-}
 
 export const mapProductDTOsToProducts = (dtos: ProductDTO[]): Product[] => {
   return dtos.map(transformProductDTOToProduct);

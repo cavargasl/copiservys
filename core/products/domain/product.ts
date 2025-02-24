@@ -16,4 +16,5 @@ export interface Product {
   stock: number
   brochureUrl?: string
   recommended: boolean
+  isRemanufactured?: boolean
 }
