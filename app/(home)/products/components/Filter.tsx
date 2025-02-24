@@ -39,7 +39,7 @@ export default function Filter({
 
   const [selectedPriceRange, setSelectedPriceRange] = useState<number[]>([
     0,
-    Math.ceil(maxPrice ? Number(maxPrice) : priceRange.max),
+    Math.ceil(maxPrice && maxPrice !== '-Infinity' ? Number(maxPrice) : priceRange.max),
   ]);
   const [searchText, setSearchText] = useState(search || "");
 
@@ -67,8 +67,10 @@ export default function Filter({
   }, [debouncedSearchText, updateQueryParams]);
 
   useEffect(() => {
-    updateQueryParams({ minPrice: debouncedPriceRange[0], maxPrice: debouncedPriceRange[1] });
-  }, [debouncedPriceRange, updateQueryParams]);
+    if (priceRange.max !== -Infinity) {
+        updateQueryParams({ minPrice: debouncedPriceRange[0], maxPrice: debouncedPriceRange[1] });
+    }
+  }, [debouncedPriceRange, priceRange.max, updateQueryParams]);
 
 
   const handleCategoryChange = (category: string) => {
@@ -117,12 +119,12 @@ export default function Filter({
           {categories.map((category) => (
             <label
               key={category.name}
-              className="flex items-center justify-between"
+              className="flex items-center justify-between cursor-pointer"
               onClick={() => handleCategoryChange(category.name)}
             >
               <div className="flex items-center">
                 <Checkbox checked={categoryList.includes(category.name)} />
-                <span className="ml-2 capitalize">{category.name}</span>
+                <span className="ml-2 capitalize line-clamp-1">{category.name}</span>
               </div>
               <span className="text-sm text-muted-foreground">
                 ({category.count})
@@ -139,12 +141,12 @@ export default function Filter({
           {brands.map((brand) => (
             <label
               key={brand.name}
-              className="flex items-center justify-between"
+              className="flex items-center justify-between cursor-pointer"
               onClick={() => handleBrandChange(brand.name)}
             >
               <div className="flex items-center">
                 <Checkbox checked={brandList.includes(brand.name)} />
-                <span className="ml-2 capitalize">{brand.name}</span>
+                <span className="ml-2 capitalize line-clamp-1">{brand.name}</span>
               </div>
               <span className="text-sm text-muted-foreground">
                 ({brand.count})
