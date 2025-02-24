@@ -29,20 +29,22 @@ export default function MainNav() {
       <NavigationMenu>
         <NavigationMenuList>
           <NavigationMenuItem>
-            <Link href="/" className="h-auto capitalize">
-              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                Inicio
-                </NavigationMenuLink>
-              </Link>
-            </NavigationMenuItem>
+            <NavigationMenuLink
+              href=""
+              className={navigationMenuTriggerStyle()}
+            >
+              Inicio
+            </NavigationMenuLink>
+          </NavigationMenuItem>
 
           {mainNavItems.map((item) => (
             <NavigationMenuItem key={item.title}>
-              <Link href={item.href} className="h-auto capitalize">
-                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                  {item.title}
-                </NavigationMenuLink>
-              </Link>
+              <NavigationMenuLink
+                href={item.href}
+                className={navigationMenuTriggerStyle()}
+              >
+                {item.title}
+              </NavigationMenuLink>
             </NavigationMenuItem>
           ))}
         </NavigationMenuList>
