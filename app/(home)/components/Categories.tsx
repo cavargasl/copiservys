@@ -10,7 +10,7 @@ export default async function Categories() {
 
   return (
     <section className="w-full bg-slate-900 py-16">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto">
         <h2 className="mb-8 text-3xl font-bold text-white">Categorías</h2>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
           {categories.map((category) => (

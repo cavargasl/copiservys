@@ -23,7 +23,7 @@ export async function RecommendedProducts({
 
   return (
     <section className="w-full bg-gray-50 py-16">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto">
         <h2 className="mb-8 text-3xl font-bold">Productos Recomendados</h2>
         <div className="grid gap-6 grid-cols-[repeat(auto-fit,minmax(280px,1fr))]">
           {displayProducts.map((product) => (
