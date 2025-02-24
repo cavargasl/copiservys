@@ -14,9 +14,10 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 import { MainNavItem } from "@/models";
-import { Menu, Printer } from "lucide-react";
+import { Menu } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -41,8 +42,8 @@ export default function MobileNav({ mainNavItems }: MobileNavProps) {
         </Button>
       </SheetTrigger>
       <SheetContent side="left" className="pl-1 pr-0">
-        <SheetTitle className="pl-6">
-          <Printer className="w-10 h-10" />
+        <SheetTitle className="pl-6 text-2xl font-bold">
+          {siteConfig.name}
         </SheetTitle>
         <ScrollArea className="my-4 h-[calc(100vh-8rem)] pb-10 pl-6">
           <div className="pl-1 pr-7">

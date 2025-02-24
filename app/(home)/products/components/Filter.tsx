@@ -17,16 +17,18 @@ interface PriceRange {
   max: number;
 }
 
-interface FilterProps {
+export interface FilterProps {
   categories: FilterItem[];
   brands: FilterItem[];
   priceRange: PriceRange;
+  hideSearch?: boolean;
 }
 
 export default function Filter({
   categories,
   brands,
   priceRange,
+  hideSearch,
 }: FilterProps) {
   const searchParams = useSearchParams();
   const category = searchParams.get("category");
@@ -80,9 +82,9 @@ export default function Filter({
   };
 
   return (
-    <div className="space-y-5 hidden lg:block fixed">
+    <div className="space-y-5">
       {/* Buscador */}
-      <SearchInput />
+      {!hideSearch && <SearchInput />}
 
       {/* Categorías */}
       <div>
