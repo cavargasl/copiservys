@@ -47,7 +47,7 @@ export default function MobileNav({ mainNavItems }: MobileNavProps) {
         </SheetTitle>
         <ScrollArea className="my-4 h-[calc(100vh-8rem)] pb-10 pl-6">
           <div className="pl-1 pr-7">
-            <Accordion type="single" collapsible className="w-full">
+            <Accordion type="single" collapsible className="w-full" defaultValue={mainNavItems?.[0].title}>
               {mainNavItems?.map((item, index) => (
                 <AccordionItem value={item.title} key={index}>
                   <AccordionTrigger className="text-sm capitalize">
