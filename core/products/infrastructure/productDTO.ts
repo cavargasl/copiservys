@@ -21,7 +21,7 @@ export function transformProductDTOToProduct(dto: ProductDTO): Product {
     title: dto.titulo,
     images: dto.imagenes && dto.imagenes.length > 0 
         ? dto.imagenes.split(',').map(url => ({
-            url: url.trim(),
+            url: url.trim().replace(/\?dl=0$/, '?raw=1'),
             name: url.trim().split('/').pop()?.split('?')[0] || 'sin-nombre'
         })) 
         : [],
