@@ -40,7 +40,7 @@ pnpm build
 pnpm start
 ```
 
-Puedes ver el proyecto en: [https://copiservys.vercel.app/](https://copiservys.vercel.app/)
+Proyecto en producción: [https://copiservys.app/](https://copiservys.app/)
 
 ---
 

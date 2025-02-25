@@ -30,7 +30,7 @@ export default function MainNav() {
         <NavigationMenuList>
           <NavigationMenuItem>
             <NavigationMenuLink
-              href=""
+              href="/"
               className={navigationMenuTriggerStyle()}
             >
               Inicio
