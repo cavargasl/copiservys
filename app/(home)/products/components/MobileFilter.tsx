@@ -22,7 +22,7 @@ export default function MobileFilter({ children }: MobileFilterProps) {
       <SearchFilter />
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <SheetTrigger asChild>
-          <Button variant="outline" size={"icon"}>
+          <Button variant="outline" size={"icon"} aria-label="Filtros">
             <FilterIcon className="w-6 h-6" />
           </Button>
         </SheetTrigger>

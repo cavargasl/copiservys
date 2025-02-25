@@ -58,9 +58,7 @@ export function ProductCard({ product }: ProductCardProps) {
         <div className="flex items-center justify-between">
           <p className="text-lg font-bold">${formatPrice(product.price)}</p>
           {product.category === "servicios" ? (
-            <Badge className="bg-green-500 hover:bg-green-600 text-white">
-              Disponible
-            </Badge>
+            <Badge variant="secondary">Disponible</Badge>
           ) : product.stock > 0 ? (
             <Badge variant="secondary">En Stock</Badge>
           ) : (
