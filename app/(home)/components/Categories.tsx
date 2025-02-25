@@ -2,6 +2,8 @@ import { store } from "@/redux/store";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
+export const revalidate = 86400;
+
 export default async function Categories() {
   const products = store.getState().products.items;
   const categories = [

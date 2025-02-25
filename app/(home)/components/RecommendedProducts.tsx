@@ -5,6 +5,8 @@ interface RecommendedProductsProps {
   maxProducts?: number;
 }
 
+export const revalidate = 86400;
+
 export async function RecommendedProducts({
   maxProducts = 4,
 }: RecommendedProductsProps) {
