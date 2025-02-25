@@ -46,13 +46,13 @@ export function ProductCard({ product }: ProductCardProps) {
         )}
       </div>
       <div className="space-y-1">
-        <p className="text-sm text-muted-foreground m-0 p-0 leading-none">
+        <p className="text-sm text-muted-foreground m-0 p-0 leading-none uppercase">
           {product.category === "servicios" ? "Precio Variable" : product.brand}
         </p>
         <h3 className="font-medium leading-tight line-clamp-2">
           {product.title}
         </h3>
-        <p className="text-sm text-muted-foreground line-clamp-3">
+        <p className="text-sm text-muted-foreground line-clamp-3 h-[3.75rem]">
           {product.description}
         </p>
         <div className="flex items-center justify-between">

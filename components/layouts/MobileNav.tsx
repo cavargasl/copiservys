@@ -1,11 +1,5 @@
 "use client";
 
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
@@ -16,18 +10,15 @@ import {
 } from "@/components/ui/sheet";
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
-import { MainNavItem } from "@/models";
 import { Menu } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 
-interface MobileNavProps {
-  mainNavItems?: MainNavItem[];
-}
-
-export default function MobileNav({ mainNavItems }: MobileNavProps) {
+export default function MobileNav() {
+  const navItems = siteConfig.mainNav[0].items;
   const pathname = usePathname();
+  console.log(pathname);
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -47,9 +38,32 @@ export default function MobileNav({ mainNavItems }: MobileNavProps) {
         </SheetTitle>
         <ScrollArea className="my-4 h-[calc(100vh-8rem)] pb-10 pl-6">
           <div className="pl-1 pr-7">
-            <Accordion type="single" collapsible className="w-full" defaultValue={mainNavItems?.[0].title}>
-              {mainNavItems?.map((item, index) => (
-                <AccordionItem value={item.title} key={index}>
+            <nav className="my-2">
+              <ul className="space-y-2">
+                <li className="py-1">
+                  <MobileLink
+                    href="/"
+                    pathname={pathname}
+                    setIsOpen={setIsOpen}
+                  >
+                    Inicio
+                  </MobileLink>
+                </li>
+                {navItems?.map((item, index) => (
+                  <li key={index} className="py-1">
+                    <MobileLink
+                      key={item.href}
+                      href={item.href}
+                      pathname={pathname}
+                      setIsOpen={setIsOpen}
+                    >
+                      {item.title}
+                    </MobileLink>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+            {/* <Accordion type="single" collapsible className="w-full" defaultValue={mainNavItems?.[0].title}>
                   <AccordionTrigger className="text-sm capitalize">
                     {item.title}
                   </AccordionTrigger>
@@ -79,7 +93,7 @@ export default function MobileNav({ mainNavItems }: MobileNavProps) {
                   </AccordionContent>
                 </AccordionItem>
               ))}
-            </Accordion>
+            </Accordion> */}
           </div>
         </ScrollArea>
       </SheetContent>
@@ -106,8 +120,8 @@ function MobileLink({
     <Link
       href={href}
       className={cn(
-        "text-foreground/70 transition-colors hover:text-foreground",
-        pathname === href && "text-foreground",
+        "text-foreground transition-colors hover:text-foreground",
+        pathname === href && "text-foreground/40",
         disabled && "pointer-events-none opacity-60"
       )}
       onClick={() => setIsOpen(false)}
