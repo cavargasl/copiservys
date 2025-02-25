@@ -18,7 +18,6 @@ import { useState } from "react";
 export default function MobileNav() {
   const navItems = siteConfig.mainNav[0].items;
   const pathname = usePathname();
-  console.log(pathname);
   const [isOpen, setIsOpen] = useState(false);
 
   return (
