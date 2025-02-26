@@ -14,6 +14,8 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { env } from "@/config/env.mjs";
+import { CartItem } from "@/core/cart/domain/cart";
 import { formatPrice } from "@/core/shared/utils";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { initializeCart } from "@/redux/slices/cart";
@@ -21,18 +23,48 @@ import { ShoppingCart } from "lucide-react";
 import Link from "next/link";
 import { useEffect } from "react";
 import WhatsApp from "../ui/brand/WhatsApp";
-import { env } from "@/config/env.mjs";
+
+// Función para formatear el texto del producto
+const formatProductText = (item: CartItem) => {
+  let productText = `${item.quantity}x ${item.product.title}`;
+
+  if (item.product.isRemanufactured) {
+    productText += " (remanufacturada)";
+  }
+
+  if (item.product.category === "servicios") {
+    productText += " (Repuestos por separado y precio variable)";
+  }
+  productText += ` - ${formatPrice(item.product.price * item.quantity)}`;
+
+  return productText;
+};
+
+const getShippingInquiryText = ({hasService, onlyServices}:{hasService:boolean, onlyServices:boolean}) => {
+  if (onlyServices) {
+    return "¿Podrían ayudarme con el costo del servicio y las fechas disponibles para coordinar la visita técnica?";
+  } else if (hasService) {
+    return "¿Podrían indicarme el costo de envío y del servicio técnico, así como las fechas disponibles para coordinar la visita?";
+  } else {
+    return "¿Podrían indicarme los costos de envío para mi zona?";
+  }
+};
 
 export function CartSheet() {
   const { items, total } = useAppSelector((state) => state.cart);
   const dispatch = useAppDispatch();
 
+  const hasService = items.some(item => item.product.category === "servicios");
+  const onlyServices = items.every(item => item.product.category === "servicios");
+
+  const shippingInquiryText = getShippingInquiryText({hasService, onlyServices});
+
   const text = `¡Hola! Me gustaría hacer el siguiente pedido:
-${items.map((item) => `\n- ${item.quantity}x ${item.product.title} - ${formatPrice(item.product.price * item.quantity)}`).join('')}
+${items.map((item) => `\n- ${formatProductText(item)}`).join('')}
+  
+Precio ${hasService ? 'estimado' : 'del pedido'}: ${formatPrice(total)}
 
-Total del pedido: ${formatPrice(total)}
-
-¿Podrían indicarme los costos de envío para mi zona?
+${shippingInquiryText}
 
 ¡Gracias!`;
 
@@ -107,9 +139,9 @@ Total del pedido: ${formatPrice(total)}
               <SheetFooter className="mt-1.5">
                 <SheetTrigger asChild>
                   <Link
-                    href={`https://wa.me/${env.NEXT_PUBLIC_WHATSAPP_NUMBER}?text=${encodeURIComponent(
-                      text
-                    )}`}
+                    href={`https://wa.me/${
+                      env.NEXT_PUBLIC_WHATSAPP_NUMBER
+                    }?text=${encodeURIComponent(text)}`}
                     target="_blank"
                     aria-label="Completar pedido en WhatsApp"
                     className={buttonVariants({

@@ -38,11 +38,16 @@ export default function ItemCart({ item, children }: ItemCartProps) {
           )}
         </div>
         <div className="grid grid-cols-2 text-sm flex-1 gap-1">
+          {item.isRemanufactured && (
+            <span className="text-red-500 col-span-2">
+              Este producto es remanufacturado
+            </span>
+          )}
           <span className="line-clamp-1 font-semibold col-span-2">
             {item.title}
           </span>
           <span className="line-clamp-1">{`${
-            item.category === "servicios" ? "Precio aproximado" : "Precio unidad"
+            item.category === "servicios" ? "Precio mínimo" : "Precio unidad"
           }`}</span>
           <span className="line-clamp-1 text-muted-foreground">
             {formatPrice(item.price)}

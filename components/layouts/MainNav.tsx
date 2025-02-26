@@ -23,7 +23,7 @@ export default function MainNav() {
         className="hidden items-center space-x-2 lg:flex flex-nowrap"
       >
         <span className="text-xl font-bold leading-none uppercase text-center">
-          Copi<br></br>servys
+          Copiservys
         </span>
       </Link>
       <NavigationMenu>
