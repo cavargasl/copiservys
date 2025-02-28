@@ -3,10 +3,14 @@ import { Product } from "@/core/products/domain/product";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 
+const apiUrl = env.NEXT_PUBLIC_APP_URL.endsWith('/') 
+  ? env.NEXT_PUBLIC_APP_URL.slice(0, -1) 
+  : env.NEXT_PUBLIC_APP_URL;
+
 export const fetchProducts = createAsyncThunk(
   "products/fetchProducts",
   async () => {
-    const response = await fetch(`${env.NEXT_PUBLIC_APP_URL}/api/products`);
+    const response = await fetch(`${apiUrl}/api/products`);
 
     if (!response.ok) {
       throw new Error("Error al obtener los productos");
