@@ -5,9 +5,9 @@ export type SiteConfig = typeof siteConfig;
 export const siteConfig = {
   name: "Copiservys",
   description:
-    "Soluciones integrales en equipos de oficina y tecnología. Especialistas en venta, mantenimiento y reparación de computadoras y fotocopiadoras, ofreciendo productos de calidad y servicio técnico profesional.",
+    "Soluciones completas en equipos de oficina y tecnología. Expertos en venta, mantenimiento y reparación de fotocopiadoras. Ofrecemos productos de alta calidad y servicio técnico especializado para garantizar el mejor rendimiento",
   url: env.NEXT_PUBLIC_APP_URL,
-  ogImage: `${env.NEXT_PUBLIC_APP_URL}/images/opengraph-image.png`,
+  ogImage: `${env.NEXT_PUBLIC_APP_URL}/images/opengraph-image.webp`,
   mainNav: [
     {
       title: "Inicio",
