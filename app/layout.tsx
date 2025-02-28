@@ -16,8 +16,36 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(siteConfig.url),
   title: siteConfig.name,
   description: siteConfig.description,
+  keywords: [
+    "Copiservys",
+    "Fotocopiadoras",
+    "Servicios",
+    "Mantenimiento",
+    "Reparaciones",
+    "Venta",
+    "Repuestos",
+  ],
+  authors: [{ name: "Camilo Vargas", url: "https://www.linkedin.com/in/cavargasl/" }],
+  creator: "Camilo Vargas",
+  openGraph: {
+    type: 'website',
+    locale: 'es',
+    url: new URL(siteConfig.url),
+    title: siteConfig.name,
+    description: siteConfig.description,
+    siteName: siteConfig.name,
+    images: [
+      {
+        url: siteConfig.ogImage,
+      },
+    ],
+  },
+  icons: {
+    icon: '/favicon.ico',
+  },
 };
 
 export default function RootLayout({
