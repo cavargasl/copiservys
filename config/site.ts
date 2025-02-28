@@ -7,7 +7,7 @@ export const siteConfig = {
   description:
     "Soluciones integrales en equipos de oficina y tecnología. Especialistas en venta, mantenimiento y reparación de computadoras y fotocopiadoras, ofreciendo productos de calidad y servicio técnico profesional.",
   url: env.NEXT_PUBLIC_APP_URL,
-  ogImage: `${env.NEXT_PUBLIC_APP_URL}/images/opengraph-image.png}`,
+  ogImage: `${env.NEXT_PUBLIC_APP_URL}/images/opengraph-image.png`,
   mainNav: [
     {
       title: "Inicio",
