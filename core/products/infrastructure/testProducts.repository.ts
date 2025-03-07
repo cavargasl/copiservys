@@ -1,7 +1,7 @@
-import { ProductRepository } from "../domain/productRepository";
-import { ProductDTO, transformProductDTOToProduct } from "./productDTO";
+import type { ProductRepository } from "../domain/productRepository";
+import { mapProductDTOsToProducts, type ProductDTO } from "./productDTO";
 
-const productos = [
+const productos: ProductDTO[] = [
   {
     id: "1",
     titulo: "Impresora X1",
@@ -9,20 +9,19 @@ const productos = [
     precio: "500",
     descripcion: "Impresora de alta velocidad",
     marca: "MarcaA",
-    categoria: "impresora",
+    categoria: "fotocopiadoras",
     stock: "10",
-    folletoUrl: "folleto.pdf"
+    folletoUrl: "folleto.pdf",
   },
   {
-    id: "2",
     titulo: "Repuesto Y2",
     imagenes: "",
     precio: "50",
     descripcion: "Pieza de repuesto",
     marca: "MarcaB",
-    categoria: "repuesto",
+    categoria: "suministros",
     stock: "100",
-    folletoUrl: ""
+    folletoUrl: "",
   },
   {
     id: "3",
@@ -31,20 +30,19 @@ const productos = [
     precio: "200",
     descripcion: "Servicio anual",
     marca: "MarcaC",
-    categoria: "servicio",
+    categoria: "servicios",
     stock: "0",
-    folletoUrl: ""
+    folletoUrl: "",
   },
   {
-    id: "4",
     titulo: "Producto Fabricado W4",
     imagenes: "",
     precio: "300",
     descripcion: "Producto personalizado",
     marca: "MarcaD",
-    categoria: "tintes",
+    categoria: "suministros",
     stock: "5",
-    folletoUrl: ""
+    folletoUrl: "",
   },
   {
     id: "5",
@@ -53,12 +51,12 @@ const productos = [
     precio: "700",
     descripcion: "Impresora avanzada",
     marca: "MarcaA",
-    categoria: "impresora",
+    categoria: "fotocopiadoras",
     stock: "8",
-    folletoUrl: "folleto2.pdf"
-  }
+    folletoUrl: "folleto2.pdf",
+  },
 ];
 
 export const testProductsRepository = (): ProductRepository => ({
-  getProducts: async () => productos.map(row => transformProductDTOToProduct(row as ProductDTO)),
+  getProducts: async () => mapProductDTOsToProducts(productos),
 });
